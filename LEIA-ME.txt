@@ -1,0 +1,57 @@
+FERRAMENTAS DE PEDIDOS — SUPLEMENTO PARA EXCEL ONLINE
+====================================================
+
+O QUE ESTÁ INCLUÍDO
+- Três botões na guia personalizada "Pedidos": Imprimir Pedido, Novo Pedido e Importar Dados.
+- Código-fonte JavaScript usando Office.js.
+- Manifesto XML modelo e script PowerShell para inserir o endereço HTTPS da hospedagem.
+
+REGRAS IMPLEMENTADAS
+1) IMPRIMIR PEDIDO
+- Deve ser executado em uma aba mensal (JAN a DEZ).
+- Clique primeiro em uma célula dentro do pedido desejado.
+- Pedidos começam nas linhas 5, 43, 81, 119... (37 linhas por pedido + 1 linha em branco).
+- O suplemento seleciona A:M das 37 linhas do pedido.
+- Por limitação da API do Excel, o suplemento não abre diretamente a janela de impressão. Depois da seleção, pressione Ctrl+P e confira as opções de impressão do Excel.
+
+2) NOVO PEDIDO
+- Deve ser executado em uma aba mensal (JAN a DEZ).
+- Insere 38 linhas inteiras, de modo equivalente à macro Rows("5:42").Insert.
+- Copia A43:M79 para A5:M41 após a inserção.
+- Limpa C37, B38:B40, C7:C10 e B12:E36.
+- Não cria botões físicos dentro da planilha; a impressão é feita pelo comando na guia Pedidos.
+
+3) IMPORTAR DADOS
+- Deve ser executado na aba mensal de origem.
+- Mantém os intervalos B50:B74 e D50:E74.
+- Envia B50:B74 para a coluna A da BD.
+- Envia D50:E74 para as colunas B:C da BD.
+- Preenche a fórmula =A(linha)*C(linha) na coluna D.
+- Não altera a coluna E da BD.
+- Mantém a regra de encontrar a próxima linha disponível separadamente nas colunas A e B, com linha mínima 5 para B:C.
+
+REQUISITOS DE HOSPEDAGEM
+Um Office Add-in precisa carregar suas páginas e ícones por HTTPS. O arquivo XLSM não pode armazenar sozinho o código do suplemento para que ele apareça na faixa de opções do Excel Online.
+
+Você precisa publicar o conteúdo desta pasta em um endereço HTTPS estático, por exemplo, Azure Static Web Apps ou GitHub Pages. A pasta publicada deve conter:
+- commands.html
+- commands.js
+- config.js
+- dialog.html
+- taskpane.html
+- assets/ (todos os PNGs)
+
+Antes de publicar: 
+1. Defina o endereço HTTPS que será usado na hospedagem.
+2. Abra o PowerShell nesta pasta e execute:
+   .\preparar-manifest.ps1 -BaseUrl "https://SEU-ENDERECO-DE-HOSPEDAGEM"
+3. O script cria manifest.xml e configura config.js com o endereço real.
+4. Publique os arquivos desta pasta (incluindo o config.js atualizado e a pasta assets) no endereço HTTPS definido. O manifesto XML pode ficar apenas no seu computador.
+5. No Excel Online, abra Inserir > Suplementos > Mais Suplementos > Meus Suplementos > Carregar Meu Suplemento (o nome pode variar) e selecione manifest.xml.
+6. A guia Pedidos deverá aparecer na faixa de opções.
+
+IMPORTANTE SOBRE TESTES
+- Teste primeiro em uma cópia do arquivo, não no arquivo principal.
+- Confirme que a cópia de A43:M79 para A5:M41 mantém as células mescladas, fórmulas, formatação e validações esperadas no Excel Online.
+- O comportamento de impressão foi adaptado: o suplemento seleciona o intervalo; a confirmação final da impressão é feita pelo próprio Excel.
+- Este pacote é o projeto-fonte preparado. Ainda não está publicado nem instalado, pois isso exige um endereço HTTPS de hospedagem e o carregamento do manifesto na conta Microsoft.
