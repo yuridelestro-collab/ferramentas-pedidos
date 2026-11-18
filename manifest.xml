@@ -11,7 +11,7 @@
   <DisplayName DefaultValue="Ferramentas de Pedidos" />
   <Description DefaultValue="Comandos para imprimir pedidos, criar novos pedidos e importar dados no Excel." />
   <IconUrl DefaultValue="https://yuridelestro-collab.github.io/ferramentas-pedidos/assets/icon-32.png" />
-  <HighResolutionIconUrl DefaultValue="https://yuridelestro-collab.github.io/ferramentas-pedidos/assets/icon-80.png" />
+  <HighResolutionIconUrl DefaultValue="https://yuridelestro-collab.github.io/ferramentas-pedidos/assets/icon-64.png" />
   <SupportUrl DefaultValue="https://support.microsoft.com/office" />
   <Hosts>
     <Host Name="Workbook" />
