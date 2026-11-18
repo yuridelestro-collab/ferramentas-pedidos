@@ -1,2 +1,2 @@
-/* O script preparar-manifest.ps1 substitui este endereço pelo endereço HTTPS da hospedagem. */
-window.ADDIN_BASE_URL = "__ADDIN_BASE_URL__";
+/* Endereço HTTPS da hospedagem do suplemento. */
+window.ADDIN_BASE_URL = "https://yuridelestro-collab.github.io/ferramentas-pedidos";

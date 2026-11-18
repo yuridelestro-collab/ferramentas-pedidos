@@ -1,57 +1,56 @@
-FERRAMENTAS DE PEDIDOS — SUPLEMENTO PARA EXCEL ONLINE
-====================================================
+FERRAMENTAS DE PEDIDOS — ARQUIVOS PREPARADOS PARA GITHUB PAGES
+=============================================================
 
-O QUE ESTÁ INCLUÍDO
-- Três botões na guia personalizada "Pedidos": Imprimir Pedido, Novo Pedido e Importar Dados.
-- Código-fonte JavaScript usando Office.js.
-- Manifesto XML modelo e script PowerShell para inserir o endereço HTTPS da hospedagem.
+ENDEREÇO CONFIGURADO
+https://yuridelestro-collab.github.io/ferramentas-pedidos/
 
-REGRAS IMPLEMENTADAS
-1) IMPRIMIR PEDIDO
-- Deve ser executado em uma aba mensal (JAN a DEZ).
-- Clique primeiro em uma célula dentro do pedido desejado.
-- Pedidos começam nas linhas 5, 43, 81, 119... (37 linhas por pedido + 1 linha em branco).
-- O suplemento seleciona A:M das 37 linhas do pedido.
-- Por limitação da API do Excel, o suplemento não abre diretamente a janela de impressão. Depois da seleção, pressione Ctrl+P e confira as opções de impressão do Excel.
+PUBLICAÇÃO NO GITHUB
+1. Extraia este ZIP no computador.
+2. Abra o repositório https://github.com/yuridelestro-collab/ferramentas-pedidos
+3. Na guia Code, escolha Add file > Upload files.
+4. Envie o CONTEÚDO desta pasta diretamente para a raiz do repositório. Não envie a pasta externa como uma única pasta.
+5. Preserve a pasta assets e seus arquivos PNG.
+6. Clique em Commit changes e aguarde o GitHub Pages publicar a alteração.
 
-2) NOVO PEDIDO
-- Deve ser executado em uma aba mensal (JAN a DEZ).
-- Insere 38 linhas inteiras, de modo equivalente à macro Rows("5:42").Insert.
-- Copia A43:M79 para A5:M41 após a inserção.
-- Limpa C37, B38:B40, C7:C10 e B12:E36.
-- Não cria botões físicos dentro da planilha; a impressão é feita pelo comando na guia Pedidos.
-
-3) IMPORTAR DADOS
-- Deve ser executado na aba mensal de origem.
-- Mantém os intervalos B50:B74 e D50:E74.
-- Envia B50:B74 para a coluna A da BD.
-- Envia D50:E74 para as colunas B:C da BD.
-- Preenche a fórmula =A(linha)*C(linha) na coluna D.
-- Não altera a coluna E da BD.
-- Mantém a regra de encontrar a próxima linha disponível separadamente nas colunas A e B, com linha mínima 5 para B:C.
-
-REQUISITOS DE HOSPEDAGEM
-Um Office Add-in precisa carregar suas páginas e ícones por HTTPS. O arquivo XLSM não pode armazenar sozinho o código do suplemento para que ele apareça na faixa de opções do Excel Online.
-
-Você precisa publicar o conteúdo desta pasta em um endereço HTTPS estático, por exemplo, Azure Static Web Apps ou GitHub Pages. A pasta publicada deve conter:
+ARQUIVOS QUE DEVEM FICAR NA RAIZ DO SITE
+- index.html
+- taskpane.html
 - commands.html
 - commands.js
 - config.js
 - dialog.html
-- taskpane.html
-- assets/ (todos os PNGs)
+- assets/ (pasta completa)
 
-Antes de publicar: 
-1. Defina o endereço HTTPS que será usado na hospedagem.
-2. Abra o PowerShell nesta pasta e execute:
-   .\preparar-manifest.ps1 -BaseUrl "https://SEU-ENDERECO-DE-HOSPEDAGEM"
-3. O script cria manifest.xml e configura config.js com o endereço real.
-4. Publique os arquivos desta pasta (incluindo o config.js atualizado e a pasta assets) no endereço HTTPS definido. O manifesto XML pode ficar apenas no seu computador.
-5. No Excel Online, abra Inserir > Suplementos > Mais Suplementos > Meus Suplementos > Carregar Meu Suplemento (o nome pode variar) e selecione manifest.xml.
-6. A guia Pedidos deverá aparecer na faixa de opções.
+O ZIP também inclui manifest.xml, que já contém as URLs do seu GitHub Pages. Ele pode ficar no repositório, mas para instalar o suplemento você deve baixar esse arquivo para o computador e carregá-lo no Excel.
 
-IMPORTANTE SOBRE TESTES
-- Teste primeiro em uma cópia do arquivo, não no arquivo principal.
-- Confirme que a cópia de A43:M79 para A5:M41 mantém as células mescladas, fórmulas, formatação e validações esperadas no Excel Online.
-- O comportamento de impressão foi adaptado: o suplemento seleciona o intervalo; a confirmação final da impressão é feita pelo próprio Excel.
-- Este pacote é o projeto-fonte preparado. Ainda não está publicado nem instalado, pois isso exige um endereço HTTPS de hospedagem e o carregamento do manifesto na conta Microsoft.
+VALIDAÇÃO DA PUBLICAÇÃO
+Depois do commit, estes endereços devem abrir sem erro:
+- https://yuridelestro-collab.github.io/ferramentas-pedidos/
+- https://yuridelestro-collab.github.io/ferramentas-pedidos/taskpane.html
+- https://yuridelestro-collab.github.io/ferramentas-pedidos/commands.html
+- https://yuridelestro-collab.github.io/ferramentas-pedidos/config.js
+- https://yuridelestro-collab.github.io/ferramentas-pedidos/assets/icon-32.png
+
+REGRAS IMPLEMENTADAS
+1) IMPRIMIR PEDIDO
+- Executar em uma aba mensal (JAN a DEZ).
+- Selecionar uma célula dentro do pedido desejado.
+- Pedidos começam nas linhas 5, 43, 81, 119... (37 linhas + 1 linha em branco).
+- O suplemento seleciona A:M das 37 linhas do pedido. Depois, use Ctrl+P no Excel.
+
+2) NOVO PEDIDO
+- Executar em uma aba mensal (JAN a DEZ).
+- Insere 38 linhas inteiras.
+- Copia o bloco-modelo para o início da aba e limpa os mesmos campos da macro VBA.
+- Não cria botões físicos dentro da planilha.
+
+3) IMPORTAR DADOS
+- Executar na aba mensal de origem.
+- Mantém B50:B74 e D50:E74.
+- Envia B50:B74 para a coluna A da BD.
+- Envia D50:E74 para B:C da BD.
+- Preenche a fórmula na coluna D.
+- Não modifica a coluna E da BD.
+
+IMPORTANTE
+Teste primeiro em uma cópia do arquivo Excel. Antes de usar em produção, valide especialmente a cópia do pedido, as células mescladas, fórmulas, formatos e validações no Excel Online.
